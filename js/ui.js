@@ -4,6 +4,15 @@ var session = {
   homePage: 'pageDevices'
 }
 
+function settingsLocalUpdate(settings) {
+  if ( (undefined === settings.home) || (0 === $('#'+settings.home).length) ) {
+    session.homePage = 'pageDashboard';
+  }
+  else {
+    session.homePage = settings.home;
+  }
+}
+
 function loginSuccess(data, status) {
   $.mobile.loading('hide');
 
@@ -14,12 +23,7 @@ function loginSuccess(data, status) {
   $('#username').val('');
   $('#password').val('');
 
-  if ( (undefined === data.settings.home) || (0 === $('#'+data.settings.home).length) ) {
-    session.homePage = 'pageDashboard';
-  }
-  else {
-    session.homePage = data.settings.home;
-  }
+  settingsLocalUpdate(data.settings);
 
   $.mobile.pageContainer.pagecontainer("change", '#'+session.homePage);
   $('#dashboardOptionsLink').addClass('selected');
@@ -204,6 +208,7 @@ function loadSettingsError(XMLHttpRequest, textStatus, errorThrown) {
 
 function settingsSaved(data, status) {
   $.mobile.loading('hide');
+  settingsLocalUpdate(data);
   $.mobile.changePage( '#'+session.homePage );
 }
 
