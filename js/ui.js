@@ -20,6 +20,10 @@ function loginSuccess(data, status) {
     $("#optionsUsername").text(data.user.name + ' ' + data.user.surname);
   }
 
+  if ( (undefined !== data.organizations) && (0 < data.organizations.length) ) {
+    $("#optionsOrganization").text(data.organizations[0]);
+  }
+
   $('#username').val('');
   $('#password').val('');
 
