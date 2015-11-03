@@ -105,11 +105,14 @@ function loadDevicesSuccess(data, status) {
   else {
     for (var deviceId=0; deviceId<data.devices.length; deviceId++) {
       var device = data.devices[deviceId];
+      if ( (undefined === device) || (null === device) ) {
+        continue;
+      }
       htmlListItems += '<li><a href="#" onclick="javascript: handleClickDevices('
       htmlListItems += device.id;
       htmlListItems += ');">';
       htmlListItems += device.name;
-      if (true === device.power) {
+      if ('true' == device.power) {
         htmlListItems += ' <span class="ui-li-count powerOn">on</span></a></li>';
       }
       else {
