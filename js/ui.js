@@ -161,7 +161,7 @@ function loadDeviceSuccess(data, status) {
   $.mobile.changePage( "#pageDevice" );
 
   $('#pageDevicePower').unbind('change');
-  if (true === data.power) {
+  if ("true" == data.properties.power) {
     $("#pageDevicePower").val("on").flipswitch("refresh");
   }
   else {
@@ -171,6 +171,31 @@ function loadDeviceSuccess(data, status) {
     deviceTurnOnOff();
   });
 
+  //Show devices status and statistics
+  $('#deviceStats').empty();
+  var tableHead = "<thead>\n\t<tr>\n";
+  var tableBody = "<tbody>\n\t<tr>\n";
+  for(var index in data.properties) {
+
+    if ("power" === index) {
+      continue;
+    }
+
+    tableHead += "\t\t<td>";
+    tableHead += index;
+    tableHead += "</td>\n";
+
+    tableBody += "\t\t<td>";
+    tableBody += data.properties[index];
+    tableBody += "</td>\n";
+  }
+  tableHead += "\n\t</tr>\n</thead>\n";
+  tableBody += "\n\t</tr>\n</tbody>\n";
+  $('#deviceStats').append(tableHead);
+  $('#deviceStats').append(tableBody);
+  $('#deviceStats').table("rebuild");
+
+  //Show device features
   $('#pageDeviceListFeatures').empty();
   for (var iter=0; iter< data.features.length; iter++) {
     var featureItem = '<li data-icon="check"><a href="#" data-role="button">';
