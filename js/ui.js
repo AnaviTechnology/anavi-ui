@@ -155,6 +155,10 @@ function handleClickDevices(deviceId) {
   $.mobile.changePage( "#pageDevice" );
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function loadDeviceSuccess(data, status) {
   $('#pageDeviceHeaderTitle').text(data.name);
   $('#pageDeviceTitle').text(data.type);
@@ -171,6 +175,23 @@ function loadDeviceSuccess(data, status) {
     deviceTurnOnOff();
   });
 
+  //Show device features
+  var featureUnits = new Array();
+  $('#pageDeviceListFeatures').empty();
+  for (var iter = 0; iter < data.features.length; iter++) {
+    if (undefined === data.features[iter].type) {
+      continue;
+    }
+
+    featureUnits[data.features[iter].type] = data.features[iter].unit;
+
+    var featureItem = '<li data-icon="check"><a href="#" data-role="button">';
+    featureItem += data.features[iter].type;
+    featureItem += '</a></li>';
+    $('#pageDeviceListFeatures').append(featureItem);
+  }
+  $('#pageDeviceListFeatures').listview('refresh');
+
   //Show devices status and statistics
   $('#deviceStats').empty();
   var tableHead = "<thead>\n\t<tr>\n";
@@ -182,11 +203,15 @@ function loadDeviceSuccess(data, status) {
     }
 
     tableHead += "\t\t<td>";
-    tableHead += index;
+    tableHead += capitalizeFirstLetter(index);
     tableHead += "</td>\n";
 
     tableBody += "\t\t<td>";
     tableBody += data.properties[index];
+    if ( (undefined !== featureUnits[index]) &&
+         (0 < featureUnits[index].length) ) {
+      tableBody += featureUnits[index];
+    }
     tableBody += "</td>\n";
   }
   tableHead += "\n\t</tr>\n</thead>\n";
@@ -195,15 +220,6 @@ function loadDeviceSuccess(data, status) {
   $('#deviceStats').append(tableBody);
   $('#deviceStats').table("rebuild");
 
-  //Show device features
-  $('#pageDeviceListFeatures').empty();
-  for (var iter=0; iter< data.features.length; iter++) {
-    var featureItem = '<li data-icon="check"><a href="#" data-role="button">';
-    featureItem += data.features[iter];
-    featureItem += '</a></li>';
-    $('#pageDeviceListFeatures').append(featureItem);
-  }
-  $('#pageDeviceListFeatures').listview('refresh');
   $.mobile.loading('hide');
 }
 
