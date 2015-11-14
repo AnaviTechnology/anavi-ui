@@ -16,3 +16,7 @@
 .powerOff {
   background-color: #F80000 !important;
 }
+
+.listItemOffset {
+  padding-left: 0.5em;
+}
