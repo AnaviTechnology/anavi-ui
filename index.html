@@ -514,12 +514,37 @@
     <div data-role="content">
 
       <ul data-role="listview" data-split-icon="user">
-        <li><a href="#" class="fa fa-check-square-o"><span class="listItemOffset">Foo</span></a><a href="#"></a></li>
-        <li><a href="#" class="fa fa-square-o listOffset"><span class="listItemOffset">Bar</span></a><a href="#"></a></li>
-        <li><a href="#" class="fa fa-square-o listOffset"><span class="listItemOffset">FooBar</span></a><a href="#"></a></li>
+        <li><a href="#" class="fa fa-check-square-o"><span class="listItemOffset">Foo</span></a><a href="#pageAccounts"></a></li>
+        <li><a href="#" class="fa fa-square-o listOffset"><span class="listItemOffset">Bar</span></a><a href="#pageAccounts"></a></li>
+        <li><a href="#" class="fa fa-square-o listOffset"><span class="listItemOffset">FooBar</span></a><a href="#pageAccounts"></a></li>
       </ul>
 
     </div><!-- /content -->
+
+  </div><!-- /page -->
+
+  <div id="pageAccounts" data-role="page">
+
+        <div data-role="header">
+          <a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+          <h1>Foo</h1>
+          <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
+            <a href="#" data-role="button" data-icon="edit" data-iconpos="notext">&nbsp;</a>
+            <a href="#" data-role="button" data-icon="plus" data-iconpos="notext">&nbsp;</a>
+          </div>
+        </div><!-- /header -->
+
+        <div data-role="content">
+
+          <ul data-role="listview" data-split-icon="delete">
+            <li><a href="#">John Doe</a><a href="#"></a></li>
+            <li><a href="#">Jane Doe</a><a href="#"></a></li>
+            <li><a href="#">Ideal Petrov</a><a href="#"></a></li>
+          </ul>
+
+        </div><!-- /content -->
+
+      </div><!-- /page -->
 
   </div><!-- /page -->
 
