@@ -23,7 +23,7 @@
       <li data-icon="location"><a href="#pagePlaces">Places</a></li>
       <li data-icon="tag"><a href="#pageGroups">Groups</a></li>
       <li data-icon="clock"><a href="#pageRules">Rules</a></li>
-      <li data-icon="user"><a href="#pageOrganization">Accounts</a></li>
+      <li data-icon="user"><a href="#pageOrganizations">Accounts</a></li>
       <li data-icon="gear"><a href="#pageSettings">Settings</a></li>
       <li data-role="list-divider"></li>
       <li data-icon="mail"><a href="#pageReportProblem">Report a Problem</a></li>
@@ -503,12 +503,12 @@
 
   </div><!-- /page -->
 
-  <div id="pageOrganization" data-role="page">
+  <div id="pageOrganizations" data-role="page">
 
     <div data-role="header">
       <a href="#options" data-icon="bars" data-iconpos="notext"></a>
       <h1>My Organizations</h1>
-      <a href="#" data-icon="plus" data-iconpos="notext"></a>
+      <a href="#pageOrganizationAdd" data-icon="plus" data-iconpos="notext"></a>
     </div><!-- /header -->
 
     <div data-role="content">
@@ -529,8 +529,8 @@
           <a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
           <h1>Foo</h1>
           <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
-            <a href="#" data-role="button" data-icon="edit" data-iconpos="notext">&nbsp;</a>
-            <a href="#" data-role="button" data-icon="plus" data-iconpos="notext">&nbsp;</a>
+            <a href="#pageOrganizationEdit" data-role="button" data-icon="edit" data-iconpos="notext">&nbsp;</a>
+            <a href="#pageAccountAddUsers" data-role="button" data-icon="plus" data-iconpos="notext">&nbsp;</a>
           </div>
         </div><!-- /header -->
 
@@ -545,6 +545,42 @@
         </div><!-- /content -->
 
       </div><!-- /page -->
+
+  </div><!-- /page -->
+
+  <div id="pageOrganizationEdit" data-role="page">
+
+        <div data-role="header">
+          <a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+          <h1>Edit Organization</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+        </div><!-- /content -->
+
+  </div><!-- /page -->
+
+  <div id="pageOrganizationAdd" data-role="page">
+
+        <div data-role="header">
+          <a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+          <h1>Add New Organization</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+        </div><!-- /content -->
+
+  </div><!-- /page -->
+
+  <div id="pageAccountAddUsers" data-role="page">
+
+        <div data-role="header">
+          <a data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+          <h1>Add Users</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+        </div><!-- /content -->
 
   </div><!-- /page -->
 
