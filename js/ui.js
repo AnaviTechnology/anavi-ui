@@ -1,5 +1,9 @@
 var session = {
-  userId: 0,
+  user: {
+    id: 0,
+    name: '',
+    surname: ''
+  },
   deviceId: 0,
   homePage: 'pageDevices',
   organization: {
@@ -22,6 +26,12 @@ function loginSuccess(data, status) {
 
   if ( (undefined !== data.user.name) && (undefined !== data.user.surname) ) {
     $("#optionsUsername").text(data.user.name + ' ' + data.user.surname);
+    session.user.name = data.user.name;
+    session.user.surname = data.user.surname;
+  }
+
+  if (undefined !== data.user.id) {
+    session.user.id = data.user.id;
   }
 
   if ( (undefined !== data.organizations) && (0 < data.organizations.length) ) {
@@ -270,7 +280,7 @@ function loadMyOrganization(data, status) {
 
   var htmlListItems = "";
   if (0 === data.organizations.length) {
-    htmlListItems += '<li>No devices found.</li>';
+    htmlListItems += '<li>No organizations found.</li>';
   }
   else {
     for (var index=0; index<data.organizations.length; index++) {
@@ -297,6 +307,38 @@ function loadMyOrganization(data, status) {
   $('#pageAccountOrganizations').empty();
   $('#pageAccountOrganizations').append(htmlListItems);
   $('#pageAccountOrganizations').listview('refresh');
+
+  $.mobile.loading('hide');
+}
+
+function loadOrganizationUsers(data, status) {
+  var htmlListItems = "";
+
+  if (0 === data.users.length) {
+    htmlListItems += '<li>No users found.</li>';
+  }
+  else {
+    for (var index=0; index<data.users.length; index++) {
+      var user = data.users[index];
+      if ( (undefined === user) || (null === user) ) {
+        continue;
+      }
+      htmlListItems += '<li><a href="#" class="fa ';
+      if (session.user.id === user.id) {
+        htmlListItems += 'fa-star';
+      }
+      else {
+        htmlListItems += 'fa-user';
+      }
+      htmlListItems += '"><span class="listItemOffset">';
+      htmlListItems += user.name + ' ' + user.surname;
+      htmlListItems += '</span></a><a href="#"></a></li>';
+    }
+  }
+
+  $('#pageAccountsOrganizationUsers').empty();
+  $('#pageAccountsOrganizationUsers').append(htmlListItems);
+  $('#pageAccountsOrganizationUsers').listview('refresh');
 
   $.mobile.loading('hide');
 }
@@ -388,6 +430,10 @@ $(document).on('pagecontainershow', function(e, ui) {
     else if ('pageOrganizations' === pageId) {
       sendRequest('organizations', { },
                   loadMyOrganization, loadSettingsError);
+    }
+    else if ('pageAccounts' === pageId) {
+      sendRequest('organization/1/users/', { },
+                  loadOrganizationUsers, loadSettingsError);
     }
 });
 
