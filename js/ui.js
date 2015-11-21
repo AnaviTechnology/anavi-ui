@@ -1,7 +1,11 @@
 var session = {
   userId: 0,
   deviceId: 0,
-  homePage: 'pageDevices'
+  homePage: 'pageDevices',
+  organization: {
+    id: 0,
+    name: ''
+  }
 }
 
 function settingsLocalUpdate(settings) {
@@ -21,7 +25,9 @@ function loginSuccess(data, status) {
   }
 
   if ( (undefined !== data.organizations) && (0 < data.organizations.length) ) {
-    $("#optionsOrganization").text(data.organizations[0]);
+    $("#optionsOrganization").text(data.organizations[0].name);
+    session.organization.id = data.organizations[0].id;
+    session.organization.name = data.organizations[0].name;
   }
 
   $('#username').val('');
@@ -260,6 +266,41 @@ function settingsSaved(data, status) {
   $.mobile.changePage( '#'+session.homePage );
 }
 
+function loadMyOrganization(data, status) {
+
+  var htmlListItems = "";
+  if (0 === data.organizations.length) {
+    htmlListItems += '<li>No devices found.</li>';
+  }
+  else {
+    for (var index=0; index<data.organizations.length; index++) {
+      var organization = data.organizations[index];
+      if ( (undefined === organization) || (null === organization) ) {
+        continue;
+      }
+      htmlListItems += '<li><a href="#" class="fa ';
+      if (organization.id === session.organization.id) {
+        htmlListItems += 'fa-check-square-o';
+      }
+      else {
+        htmlListItems += 'fa-square-o';
+      }
+      htmlListItems += '" onclick="javascript: handleSelectOrganization('
+      htmlListItems += organization.id;
+      htmlListItems += ');"><span class="listItemOffset">';
+      htmlListItems += organization.name;
+      htmlListItems += '</span></a>'
+      htmlListItems += '<a href="#pageAccounts"></a>';
+      htmlListItems += '</li>';
+    }
+  }
+  $('#pageAccountOrganizations').empty();
+  $('#pageAccountOrganizations').append(htmlListItems);
+  $('#pageAccountOrganizations').listview('refresh');
+
+  $.mobile.loading('hide');
+}
+
 $(document).ready(function() {
 
   $( "body>[data-role='panel']" ).panel().enhanceWithin();
@@ -343,6 +384,10 @@ $(document).on('pagecontainershow', function(e, ui) {
     else if ('pageSettings' === pageId) {
       sendRequest('settings', { },
                     loadSettingsSuccess, loadSettingsError);
+    }
+    else if ('pageOrganizations' === pageId) {
+      sendRequest('organizations', { },
+                  loadMyOrganization, loadSettingsError);
     }
 });
 
