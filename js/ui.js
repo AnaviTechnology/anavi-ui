@@ -15,6 +15,8 @@ var session = {
   }
 }
 
+$.mobile.changePage.defaults.allowSamePageTransition = true;
+
 function settingsLocalUpdate(settings) {
   if ( (undefined === settings.home) || (0 === $('#'+settings.home).length) ) {
     session.homePage = 'pageDashboard';
@@ -38,9 +40,7 @@ function loginSuccess(data, status) {
   }
 
   if ( (undefined !== data.organizations) && (0 < data.organizations.length) ) {
-    $("#optionsOrganization").text(data.organizations[0].name);
-    session.organization.id = data.organizations[0].id;
-    session.organization.name = data.organizations[0].name;
+    changeOrganization(data.organizations[0].id, data.organizations[0].name);
   }
 
   $('#username').val('');
@@ -284,6 +284,18 @@ function showOrganizationUsers(organizationId) {
   $.mobile.changePage( '#pageAccounts' );
 }
 
+function changeOrganization(id, name) {
+  $("#optionsOrganization").text(name);
+  session.organization.id = parseInt(id);
+  session.organization.name = name;
+}
+
+function selectOrganization(id, name) {
+  changeOrganization(id, name);
+  //reload organizations to display the change
+  $.mobile.changePage( '#pageOrganizations' );
+}
+
 function loadMyOrganization(data, status) {
   var htmlListItems = "";
   $('#pageAccountOrganizations').empty();
@@ -304,9 +316,9 @@ function loadMyOrganization(data, status) {
       else {
         htmlListItems += 'fa-square-o';
       }
-      htmlListItems += '" onclick="javascript: handleSelectOrganization('
-      htmlListItems += organization.id;
-      htmlListItems += ');"><span class="listItemOffset">';
+      htmlListItems += '" onclick="javascript: selectOrganization(\''
+      htmlListItems += organization.id + '\', \'' + organization.name;
+      htmlListItems += '\');"><span class="listItemOffset">';
       htmlListItems += organization.name;
       htmlListItems += '</span></a>'
       htmlListItems += '<a href="#" onclick="javascript: showOrganizationUsers(';
