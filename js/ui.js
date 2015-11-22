@@ -11,11 +11,10 @@ var session = {
     name: ''
   },
   ui: {
-    organiztionId: 0
+    organiztionId: 0,
+    myOrganizations: []
   }
 }
-
-$.mobile.changePage.defaults.allowSamePageTransition = true;
 
 function settingsLocalUpdate(settings) {
   if ( (undefined === settings.home) || (0 === $('#'+settings.home).length) ) {
@@ -293,11 +292,10 @@ function changeOrganization(id, name) {
 
 function selectOrganization(id, name) {
   changeOrganization(id, name);
-  //reload organizations to display the change
-  $.mobile.changePage( '#pageOrganizations' );
+  loadMyOrganizationData(session.ui.myOrganizations);
 }
 
-function loadMyOrganization(data, status) {
+function loadMyOrganizationData(data) {
   var htmlListItems = "";
   $('#pageAccountOrganizations').empty();
 
@@ -330,7 +328,11 @@ function loadMyOrganization(data, status) {
   }
   $('#pageAccountOrganizations').append(htmlListItems);
   $('#pageAccountOrganizations').listview('refresh');
+}
 
+function loadMyOrganization(data, status) {
+  session.ui.myOrganizations = data;
+  loadMyOrganizationData(data);
   $.mobile.loading('hide');
 }
 
