@@ -9,6 +9,9 @@ var session = {
   organization: {
     id: 0,
     name: ''
+  },
+  ui: {
+    organiztionId: 0
   }
 }
 
@@ -276,9 +279,15 @@ function settingsSaved(data, status) {
   $.mobile.changePage( '#'+session.homePage );
 }
 
-function loadMyOrganization(data, status) {
+function showOrganizationUsers(organizationId) {
+  session.ui.organizationId = organizationId;
+  $.mobile.changePage( '#pageAccounts' );
+}
 
+function loadMyOrganization(data, status) {
   var htmlListItems = "";
+  $('#pageAccountOrganizations').empty();
+
   if (0 === data.organizations.length) {
     htmlListItems += '<li>No organizations found.</li>';
   }
@@ -300,11 +309,12 @@ function loadMyOrganization(data, status) {
       htmlListItems += ');"><span class="listItemOffset">';
       htmlListItems += organization.name;
       htmlListItems += '</span></a>'
-      htmlListItems += '<a href="#pageAccounts"></a>';
+      htmlListItems += '<a href="#" onclick="javascript: showOrganizationUsers(';
+      htmlListItems += organization.id;
+      htmlListItems += ')"></a>';
       htmlListItems += '</li>';
     }
   }
-  $('#pageAccountOrganizations').empty();
   $('#pageAccountOrganizations').append(htmlListItems);
   $('#pageAccountOrganizations').listview('refresh');
 
@@ -312,6 +322,9 @@ function loadMyOrganization(data, status) {
 }
 
 function loadOrganizationUsers(data, status) {
+
+  $('#pageAccountsOrganizationUsers').empty();
+
   var htmlListItems = "";
 
   if (0 === data.users.length) {
@@ -336,7 +349,6 @@ function loadOrganizationUsers(data, status) {
     }
   }
 
-  $('#pageAccountsOrganizationUsers').empty();
   $('#pageAccountsOrganizationUsers').append(htmlListItems);
   $('#pageAccountsOrganizationUsers').listview('refresh');
 
@@ -432,7 +444,7 @@ $(document).on('pagecontainershow', function(e, ui) {
                   loadMyOrganization, loadSettingsError);
     }
     else if ('pageAccounts' === pageId) {
-      sendRequest('organization/1/users/', { },
+      sendRequest('organization/'+session.ui.organizationId+'/users/', { },
                   loadOrganizationUsers, loadSettingsError);
     }
 });
