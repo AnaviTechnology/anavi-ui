@@ -336,6 +336,24 @@ function loadMyOrganization(data, status) {
   $.mobile.loading('hide');
 }
 
+function showConfirmDialog(title, text, button1, button2, callback) {
+  $("#dialogConfirm .dialogConfirmTitle").text(title);
+  $("#dialogConfirm .dialogConfirmText").text(text);
+  $("#dialogConfirm .dialogConfirmButton2").text(button2);
+  $("#dialogConfirm .dialogConfirmButton1").text(button1).on("click.confirmButton", function() {
+    callback();
+    $(this).off("click.confirmButton");
+  });
+  $.mobile.changePage("#dialogConfirm");
+}
+
+function confirmRemoveMember(userId, userFullName) {
+  var qestion = 'Remove member ' + userFullName + '?';
+  showConfirmDialog(qestion, '', 'Remove', 'Cancel', function() {
+    console.log('delete user: '+userId);
+  });
+}
+
 function loadOrganizationUsers(data, status) {
 
   $('#pageAccountsOrganizationUsers').empty();
@@ -358,9 +376,13 @@ function loadOrganizationUsers(data, status) {
       else {
         htmlListItems += 'fa-user';
       }
+      var userFullName = user.name + ' ' + user.surname;
       htmlListItems += '"><span class="listItemOffset">';
-      htmlListItems += user.name + ' ' + user.surname;
-      htmlListItems += '</span></a><a href="#"></a></li>';
+      htmlListItems += userFullName;
+      htmlListItems += '</span></a><a href="#" ';
+      htmlListItems += 'onclick="javascript: confirmRemoveMember(';
+      htmlListItems += user.id + ', \'' + userFullName;
+      htmlListItems += '\');"></a></li>';
     }
   }
 
