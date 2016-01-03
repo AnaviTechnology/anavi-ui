@@ -131,11 +131,13 @@ function loadDevicesSuccess(data, status) {
       htmlListItems += ');" class="fa fa-plug"><span class="listItemOffset">';
       htmlListItems += device.name;
       htmlListItems += '</span>';
-      if ('true' == device.power) {
-        htmlListItems += ' <span class="ui-li-count powerOn">on</span></a></li>';
-      }
-      else {
-        htmlListItems += ' <span class="ui-li-count powerOff">off</span></a></li>';
+      if (undefined !== device.power) {
+        if ('true' == device.power) {
+          htmlListItems += ' <span class="ui-li-count powerOn">on</span></a></li>';
+        }
+        else {
+          htmlListItems += ' <span class="ui-li-count powerOff">off</span></a></li>';
+        }
       }
     }
   }
