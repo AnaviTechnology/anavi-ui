@@ -225,6 +225,11 @@ function loadDeviceSuccess(data, status) {
   var tableHead = "<thead>\n\t<tr>\n";
   var tableBody = "<tbody>\n\t<tr>\n";
   for(var index in data.properties) {
+
+    if (("power" === index) || ("display" === index) ) {
+      continue;
+    }
+
     tableHead += "\t\t<td>";
     tableHead += capitalizeFirstLetter(index);
     tableHead += "</td>\n";
