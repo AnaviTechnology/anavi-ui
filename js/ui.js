@@ -128,7 +128,14 @@ function loadDevicesSuccess(data, status) {
       }
       htmlListItems += '<li><a href="#" onclick="javascript: handleClickDevices('
       htmlListItems += device.id;
-      htmlListItems += ');" class="fa fa-plug"><span class="listItemOffset">';
+      htmlListItems += ');" class="fa fa-';
+      if (undefined !== device.icon) {
+        htmlListItems += device.icon;
+      }
+      else {
+        htmlListItems += 'plug';
+      }
+      htmlListItems += '"><span class="listItemOffset">';
       htmlListItems += device.name;
       htmlListItems += '</span>';
       if (undefined !== device.power) {
