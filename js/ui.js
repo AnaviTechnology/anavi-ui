@@ -192,6 +192,10 @@ function loadDeviceSuccess(data, status) {
   $('#pageDeviceTitle').text(data.type);
   $.mobile.changePage( "#pageDevice" );
 
+  if ('raspberry-pi-weather-station' === data.type) {
+    $('#pageDevicePowerLabel').text('Display');
+  }
+
   $('#pageDevicePower').unbind('change');
   if ("true" == data.properties.power) {
     $("#pageDevicePower").val("on").flipswitch("refresh");
