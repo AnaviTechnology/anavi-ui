@@ -168,9 +168,9 @@ function loadDevicesError(XMLHttpRequest, textStatus, errorThrown) {
   $.mobile.loading('hide');
 }
 
-function deviceTurnOnOff() {
+function deviceTurnOnOff(property) {
   var powerState = ('on' === $('#pageDevicePower').val()) ? 'true' : 'false';
-  sendRequest('device/'+session.deviceId+'/power/'+powerState, { }, function() {
+  sendRequest('device/'+session.deviceId+'/'+property+'/'+powerState, { }, function() {
     $.mobile.loading('hide');
   } , function() {
     //TODO: handle API response on error
@@ -192,19 +192,22 @@ function loadDeviceSuccess(data, status) {
   $('#pageDeviceTitle').text(data.type);
   $.mobile.changePage( "#pageDevice" );
 
+  var switchType = 'power';
   if ('raspberry-pi-weather-station' === data.type) {
     $('#pageDevicePowerLabel').text('Display');
+    switchType = 'display';
   }
 
   $('#pageDevicePower').unbind('change');
-  if ("true" == data.properties.power) {
+  var property = eval('data.properties.'+switchType);
+  if ("true" == property) {
     $("#pageDevicePower").val("on").flipswitch("refresh");
   }
   else {
     $("#pageDevicePower").val("off").flipswitch("refresh");
   }
   $('#pageDevicePower').on('change', function() {
-    deviceTurnOnOff();
+    deviceTurnOnOff(switchType);
   });
 
   //Show device features
