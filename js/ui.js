@@ -237,12 +237,19 @@ function loadDeviceSuccess(data, status) {
       continue;
     }
 
+    var label = capitalizeFirstLetter(index);
+
     tableHead += "\t\t<td>";
-    tableHead += capitalizeFirstLetter(index);
+    tableHead += label;
     tableHead += "</td>\n";
 
     tableBody += "\t\t<td>";
+    tableBody += "<span id=\"stat";
+    //label without any white spaces
+    tableBody += label.replace(/ /g,'');
+    tableBody += "\">";
     tableBody += data.properties[index];
+    tableBody += "</span>";
     if ( (undefined !== featureUnits[index]) &&
          (0 < featureUnits[index].length) ) {
       tableBody += featureUnits[index];
