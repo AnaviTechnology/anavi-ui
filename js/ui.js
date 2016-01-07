@@ -415,6 +415,21 @@ function loadOrganizationUsers(data, status) {
   $.mobile.loading('hide');
 }
 
+function updateSensor(data) {
+
+  var page = $(':mobile-pagecontainer').pagecontainer('getActivePage')[0].id;
+  if ('pageDevice' !== page) {
+    //Do not update anything if the page is not visible
+    return;
+  }
+
+  for(key in data) {
+    var htmlId = ('pressure' === key) ?
+      'Barometricpressure' : capitalizeFirstLetter(key);
+    $('#stat'+htmlId).text(data[key]);
+  }
+}
+
 $(document).ready(function() {
 
   $( "body>[data-role='panel']" ).panel().enhanceWithin();
