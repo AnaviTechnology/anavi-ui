@@ -3,21 +3,20 @@ var mqttPort = 8080;
 var mqttTopic = '724cb57fb81b463980ac71543012d9cd/sensors/#';
 
 // Create a client instance
-client = new Paho.MQTT.Client('test.mosquitto.org', 8080, "rabbitpi-web-ui");
+mqttClient = new Paho.MQTT.Client('test.mosquitto.org', 8080, "rabbitpi-web-ui");
 
 // set callback handlers
-client.onConnectionLost = onConnectionLost;
-client.onMessageArrived = onMessageArrived;
+mqttClient.onConnectionLost = onConnectionLost;
+mqttClient.onMessageArrived = onMessageArrived;
 
 // connect the client
-client.connect({onSuccess:onConnect});
+mqttClient.connect({onSuccess:onConnect});
 
 
 // called when the client connects
 function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
   console.log("onConnect");
-  client.subscribe(mqttTopic);
 }
 
 // called when the client loses its connection

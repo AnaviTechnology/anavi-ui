@@ -188,6 +188,10 @@ function capitalizeFirstLetter(string) {
 }
 
 function loadDeviceSuccess(data, status) {
+
+  // Listen for MQTT data about sensors
+  mqttClient.subscribe(mqttTopic);
+
   $('#pageDeviceHeaderTitle').text(data.name);
   $('#pageDeviceTitle').text(data.type);
   $.mobile.changePage( "#pageDevice" );
@@ -416,13 +420,7 @@ function loadOrganizationUsers(data, status) {
 }
 
 function updateSensor(data) {
-
-  var page = $(':mobile-pagecontainer').pagecontainer('getActivePage')[0].id;
-  if ('pageDevice' !== page) {
-    //Do not update anything if the page is not visible
-    return;
-  }
-
+  // Update sensors' data on the device statistics UI
   for(key in data) {
     var htmlId = ('pressure' === key) ?
       'Barometricpressure' : capitalizeFirstLetter(key);
@@ -522,6 +520,13 @@ $(document).on('pagecontainershow', function(e, ui) {
       sendRequest('organization/'+session.ui.organizationId+'/users/', { },
                   loadOrganizationUsers, loadSettingsError);
     }
+});
+
+$(document).on( 'pagecontainerbeforehide', function( event, ui ) {
+  // Unsubscribe from MQTT messages for sensors data
+  if ('pageDevice' === ui.prevPage.attr('id')) {
+    mqttClient.unsubscribe(mqttTopic);
+  }
 });
 
 var charts = {
