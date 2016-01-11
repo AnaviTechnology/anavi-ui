@@ -200,6 +200,10 @@ function loadDeviceSuccess(data, status) {
   if ('raspberry-pi-weather-station' === data.type) {
     $('#pageDevicePowerLabel').text('Display');
     switchType = 'display';
+
+    //Hide graphics
+    $('#deviceUsageLastWeek').hide();
+    $('#deviceUsageLastYear').hide();
   }
 
   $('#pageDevicePower').unbind('change');
