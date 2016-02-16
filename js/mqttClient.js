@@ -3,7 +3,7 @@ var mqttPort = 8080;
 var mqttTopic = '724cb57fb81b463980ac71543012d9cd/sensors/#';
 
 // Create a client instance
-mqttClient = new Paho.MQTT.Client('test.mosquitto.org', 8080, "rabbitpi-web-ui");
+mqttClient = new Paho.MQTT.Client('test.mosquitto.org', 8080, "rabbitmax-web-ui");
 
 // set callback handlers
 mqttClient.onConnectionLost = onConnectionLost;
